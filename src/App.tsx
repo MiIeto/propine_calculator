@@ -8,8 +8,8 @@ import useOrder from "./hooks/useOrder";
 function App() {
 	const { order, addItem, removeItem, tip, setTip, placeOrder } = useOrder();
 	return (
-		<>
-			<header className="bg-teal-400 py-5">
+		<div className="bg-slate-50">
+			<header className="bg-slate-400 py-5">
 				<h1 className="text-center text-4xl font-black">
 					Calculadora de Propinas y Consumo
 				</h1>
@@ -24,6 +24,7 @@ function App() {
 								key={item.id}
 								item={item}
 								addItem={addItem}
+                order={order}
 							/>
 						))}
 					</div>
@@ -47,7 +48,7 @@ function App() {
           )}
 				</div>
 			</main>
-		</>
+		</div>
 	);
 }
 
