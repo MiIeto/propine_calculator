@@ -30,7 +30,7 @@ export default function OrderContents({
 						</div>
 
 						<button
-							className="bg-red-600 h-8 w-8 rounded-full text-white font-black"
+							className="bg-red-700 h-8 w-8 rounded-full text-white font-black"
 							onClick={() => removeItem(item.id)}
 						>
 							X
