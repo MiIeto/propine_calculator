@@ -1,14 +1,19 @@
 import { formatCurrency } from "../helpers";
 import { MenuItem, OrderItem } from "../types";
+import QuantityUpDown from "./QuantityUpDown";
 
 type OrderContentsProps = {
 	order: OrderItem[];
 	removeItem: (id: MenuItem["id"]) => void;
+	increaseQuantity: (id: OrderItem["id"]) => void;
+	decreaseQuantiy: (id: OrderItem["id"]) => void;
 };
 
 export default function OrderContents({
 	order,
 	removeItem,
+	increaseQuantity,
+	decreaseQuantiy,
 }: OrderContentsProps) {
 	return (
 		<div>
@@ -23,8 +28,9 @@ export default function OrderContents({
 							<p className="text-lg">
 								{item.name} - {formatCurrency(item.price)}
 							</p>
-							<p className="font-black">
-								Cantidad: {item.quantity} -{" "}
+							<p className="font-black flex gap-2">
+								Cantidad:{" "}
+								<QuantityUpDown itemQuantity={item.quantity} itemId={item.id} increaseQuantity={increaseQuantity} decreaseQuantiy={decreaseQuantiy}/>
 								{formatCurrency(item.price * item.quantity)}
 							</p>
 						</div>

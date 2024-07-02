@@ -6,7 +6,7 @@ import { menuItems } from "./data/db";
 import useOrder from "./hooks/useOrder";
 
 function App() {
-	const { order, addItem, removeItem, tip, setTip, placeOrder } = useOrder();
+	const { order, addItem, removeItem, tip, setTip, placeOrder, increaseQuantity, decreaseQuantiy } = useOrder();
 	return (
 		<div className="bg-slate-50">
 			<header className="bg-slate-400 py-5">
@@ -35,6 +35,8 @@ function App() {
 							<OrderContents
 								order={order}
 								removeItem={removeItem}
+								increaseQuantity={increaseQuantity}
+								decreaseQuantiy={decreaseQuantiy}
 							/>
 							<TipPercentageForm setTip={setTip} tip={tip} />
 							<OrderTotals
