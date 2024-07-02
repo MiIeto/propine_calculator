@@ -4,11 +4,15 @@ import type { MenuItem, OrderItem } from "../types";
 export default function useOrder() {
 	const [order, setOrder] = useState<OrderItem[]>([]);
 	const [tip, setTip] = useState(0);
+
+	const MAX_ITEMS = 10;
+	const MIN_ITEMS = 1;
+
 	const addItem = (item: MenuItem) => {
 		const itemExists = order.find((orderItem) => orderItem.id === item.id);
 		if (itemExists) {
 			const updatedOrder = order.map((orderItem) =>
-				orderItem.id === item.id
+				orderItem.id === item.id && orderItem.quantity < MAX_ITEMS
 					? { ...orderItem, quantity: orderItem.quantity + 1 }
 					: orderItem
 			);
@@ -29,6 +33,32 @@ export default function useOrder() {
 		setOrder([]);
 		setTip(0);
 	};
+
+	function increaseQuantity(id: OrderItem["id"]) {
+		const updatedOrder = order.map((item) => {
+			if (item.id === id && item.quantity < MAX_ITEMS) {
+				return {
+					...item,
+					quantity: item.quantity + 1,
+				};
+			}
+			return item;
+		});
+		setOrder(updatedOrder);
+	}
+
+	const decreaseQuantiy = (id: OrderItem["id"]) => {
+		const updatedOrder = order.map((orderItem) => {
+			if(orderItem.id === id && orderItem.quantity > MIN_ITEMS){
+				return {
+					...orderItem,
+					quantity: orderItem.quantity - 1,
+				}
+			}
+			return orderItem;
+		}).filter((orderItem) => orderItem.quantity !== 0);
+		setOrder(updatedOrder);
+	};
 	return {
 		order,
 		tip,
@@ -36,5 +66,7 @@ export default function useOrder() {
 		addItem,
 		removeItem,
 		placeOrder,
+		increaseQuantity,
+		decreaseQuantiy
 	};
 }
