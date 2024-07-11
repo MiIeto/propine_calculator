@@ -1,20 +1,15 @@
+import { Dispatch } from "react";
 import { formatCurrency } from "../helpers";
-import { MenuItem, OrderItem } from "../types";
+import { OrderItem } from "../types";
 import QuantityUpDown from "./QuantityUpDown";
+import { OrderActions } from "../reducers/order-reducer";
 
 type OrderContentsProps = {
 	order: OrderItem[];
-	removeItem: (id: MenuItem["id"]) => void;
-	increaseQuantity: (id: OrderItem["id"]) => void;
-	decreaseQuantiy: (id: OrderItem["id"]) => void;
+	dispatch: Dispatch<OrderActions>;
 };
 
-export default function OrderContents({
-	order,
-	removeItem,
-	increaseQuantity,
-	decreaseQuantiy,
-}: OrderContentsProps) {
+export default function OrderContents({ order, dispatch }: OrderContentsProps) {
 	return (
 		<div>
 			<h2 className="font-black text-4xl">Consumo</h2>
@@ -30,14 +25,23 @@ export default function OrderContents({
 							</p>
 							<p className="font-black flex gap-2">
 								Cantidad:{" "}
-								<QuantityUpDown itemQuantity={item.quantity} itemId={item.id} increaseQuantity={increaseQuantity} decreaseQuantiy={decreaseQuantiy}/>
+								<QuantityUpDown
+									itemQuantity={item.quantity}
+									itemId={item.id}
+									dispatch={dispatch}
+								/>
 								{formatCurrency(item.price * item.quantity)}
 							</p>
 						</div>
 
 						<button
 							className="bg-red-700 h-8 w-8 rounded-full text-white font-black"
-							onClick={() => removeItem(item.id)}
+							onClick={() =>
+								dispatch({
+									type: "remove-item",
+									payload: { id: item.id },
+								})
+							}
 						>
 							X
 						</button>

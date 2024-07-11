@@ -1,12 +1,14 @@
+import { useReducer } from "react";
 import MenuItem from "./components/MenuItem";
 import OrderContents from "./components/OrderContents";
 import OrderTotals from "./components/OrderTotals";
 import TipPercentageForm from "./components/TipPercentageForm";
 import { menuItems } from "./data/db";
-import useOrder from "./hooks/useOrder";
+import { initialState, orderReducer } from "./reducers/order-reducer";
 
 function App() {
-	const { order, addItem, removeItem, tip, setTip, placeOrder, increaseQuantity, decreaseQuantiy } = useOrder();
+
+	const [state, dispatch] = useReducer(orderReducer, initialState);
 	return (
 		<div className="bg-slate-50">
 			<header className="bg-slate-400 py-5">
@@ -23,31 +25,29 @@ function App() {
 							<MenuItem
 								key={item.id}
 								item={item}
-								addItem={addItem}
-                order={order}
+								dispatch={dispatch}
+								order={state.order}
 							/>
 						))}
 					</div>
 				</div>
 				<div className="border border-dashed border-slate-300 p-5 rounded-lg space-y-10">
-					{order.length > 0 ? (
+					{state.order.length > 0 ? (
 						<>
 							<OrderContents
-								order={order}
-								removeItem={removeItem}
-								increaseQuantity={increaseQuantity}
-								decreaseQuantiy={decreaseQuantiy}
+								order={state.order}
+								dispatch={dispatch}
 							/>
-							<TipPercentageForm setTip={setTip} tip={tip} />
+							<TipPercentageForm dispatch={dispatch} tip={state.tip} />
 							<OrderTotals
-								order={order}
-								tip={tip}
-								placeOrder={placeOrder}
+								order={state.order}
+								tip={state.tip}
+								dispatch={dispatch}
 							/>
 						</>
-          ): (
-            <p className="text-center">La orden esta vacia</p>
-          )}
+					) : (
+						<p className="text-center">La orden esta vacia</p>
+					)}
 				</div>
 			</main>
 		</div>

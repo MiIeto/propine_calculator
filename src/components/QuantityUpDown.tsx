@@ -1,16 +1,15 @@
-import { OrderItem } from "../types";
+import { Dispatch } from "react";
+import { OrderActions } from "../reducers/order-reducer";
 
 type QuantityUpDownProps = {
 	itemQuantity: number;
-	increaseQuantity: (id: OrderItem["id"]) => void;
-	decreaseQuantiy: (id: OrderItem["id"]) => void;
+	dispatch: Dispatch<OrderActions>;
 	itemId: number
 };
 
 export default function QuantityUpDown({
 	itemQuantity,
-	increaseQuantity,
-	decreaseQuantiy,
+	dispatch,
 	itemId,
 }: QuantityUpDownProps) {
 	return (
@@ -18,14 +17,14 @@ export default function QuantityUpDown({
 			<div className="flex flex-row items-center border">
 				<button
 					className="h-6 w-3 border-r"
-					onClick={() => decreaseQuantiy(itemId)}
+					onClick={() => dispatch({type: "decrease-quantity", payload: {id: itemId}})}
 				>
 					-
 				</button>
 				<p className="w-5 flex justify-center">{itemQuantity}</p>
 				<button
 					className="h-6 w-3 border-l"
-					onClick={() => increaseQuantity(itemId)}
+					onClick={() => dispatch({type: "increase-quantity", payload: {id: itemId}})}
 				>
 					+
 				</button>
